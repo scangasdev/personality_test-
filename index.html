@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Assessment Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">AP</div>
+          <div>
+            <p>Assessment Portal</p>
+            <span id="flow-state">Participant details</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-grid">
+        <aside class="nav-panel" aria-label="Assessment library">
+          <p class="panel-label">Assessments</p>
+          <nav class="test-list" id="test-list" aria-label="Available tests"></nav>
+        </aside>
+
+        <section class="flow-panel" aria-live="polite">
+          <header class="flow-head">
+            <div>
+              <p class="eyebrow" id="test-category"></p>
+              <h1 id="test-title"></h1>
+            </div>
+            <div class="flow-actions">
+              <span class="status-pill" id="test-meta"></span>
+              <button class="secondary-button" type="button" id="open-share">Share</button>
+            </div>
+          </header>
+
+          <ol class="stepper" id="stepper" aria-label="Assessment progress"></ol>
+          <div class="stage" id="stage"></div>
+        </section>
+      </main>
+
+      <div class="share-modal" id="share-modal" hidden>
+        <div class="modal-backdrop" data-share-close></div>
+        <section class="share-sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
+          <header class="share-sheet-head">
+            <div>
+              <p class="panel-label">Access</p>
+              <h2 id="share-title">Share assessment</h2>
+            </div>
+            <button class="icon-button" type="button" data-share-close aria-label="Close share panel">
+              Close
+            </button>
+          </header>
+
+          <div class="share-body">
+            <div class="qr-frame" id="qr-frame"></div>
+
+            <div>
+              <label class="link-label" for="share-link">Current test link</label>
+              <div class="link-row">
+                <input id="share-link" type="text" readonly />
+                <button class="icon-button" type="button" id="copy-link" aria-label="Copy test link">
+                  Copy
+                </button>
+              </div>
+              <p class="share-note" id="share-note"></p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
