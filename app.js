@@ -337,6 +337,7 @@ const TESTS = {
 };
 
 let selectedId = getInitialTestId();
+let shareMode = "site";
 let session = null;
 let toastTimer = 0;
 
@@ -350,6 +351,7 @@ const nodes = {
   stage: document.querySelector("#stage"),
   qrFrame: document.querySelector("#qr-frame"),
   shareLink: document.querySelector("#share-link"),
+  shareLinkLabel: document.querySelector("#share-link-label"),
   shareNote: document.querySelector("#share-note"),
   copyLink: document.querySelector("#copy-link"),
   shareModal: document.querySelector("#share-modal"),
@@ -451,14 +453,22 @@ function renderStepper(currentStep) {
 }
 
 function renderShare(test) {
-  const url = buildShareUrl(test.id);
+  const url = shareMode === "site" ? buildSiteUrl() : buildShareUrl(test.id);
+  nodes.shareLinkLabel.textContent = shareMode === "site" ? "Site link" : "Selected test link";
   nodes.shareLink.value = url;
+  document.querySelectorAll("[data-share-mode]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.shareMode === shareMode);
+  });
+
   try {
     nodes.qrFrame.innerHTML = createQrSvg(url);
-    nodes.shareNote.textContent = "Scan or copy to open this assessment.";
+    nodes.shareNote.textContent =
+      shareMode === "site"
+        ? "Scan or copy to open the full assessment portal."
+        : "Scan or copy to open this assessment directly.";
   } catch (error) {
     nodes.qrFrame.innerHTML = `<p class="muted">Use link</p>`;
-    nodes.shareNote.textContent = "Copy the assessment link.";
+    nodes.shareNote.textContent = "Copy the link instead.";
   }
 }
 
@@ -698,6 +708,13 @@ function handleClick(event) {
     return;
   }
 
+  const shareModeButton = event.target.closest("[data-share-mode]");
+  if (shareModeButton) {
+    shareMode = shareModeButton.dataset.shareMode;
+    renderShare(TESTS[selectedId]);
+    return;
+  }
+
   const testButton = event.target.closest("[data-test-id]");
   if (testButton) {
     setSelectedTest(testButton.dataset.testId);
@@ -784,6 +801,12 @@ function shuffle(items) {
 function buildShareUrl(id) {
   const url = new URL(window.location.href);
   url.hash = `test=${id}`;
+  return url.toString();
+}
+
+function buildSiteUrl() {
+  const url = new URL(window.location.href);
+  url.hash = "";
   return url.toString();
 }
 

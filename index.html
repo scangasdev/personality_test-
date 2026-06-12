@@ -58,7 +58,16 @@
             <div class="qr-frame" id="qr-frame"></div>
 
             <div>
-              <label class="link-label" for="share-link">Current test link</label>
+              <div class="share-mode" role="group" aria-label="QR link type">
+                <button class="share-mode-button active" type="button" data-share-mode="site">
+                  Site
+                </button>
+                <button class="share-mode-button" type="button" data-share-mode="test">
+                  Test
+                </button>
+              </div>
+
+              <label class="link-label" for="share-link" id="share-link-label">Site link</label>
               <div class="link-row">
                 <input id="share-link" type="text" readonly />
                 <button class="icon-button" type="button" id="copy-link" aria-label="Copy test link">
